@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+	<head>
+	</head>
+	
+	<body>
+		<p>test</p>
+		
+		<input id="time-in" type="button" value="time-in" onclick="setTimeIn()"/>
+		<input id="time-out" type="button" value="time-out" onclick="setTimeOut()"/>
+		
+		<a th:href="@{/logs-summary}">Summary</a>
+		
+	</body>
+	
+	<script th:src="@{/scripts/library/jquery-3.7.1.min.js}"></script>
+	<script th:src="@{/scripts/setTimeIn.js}"></script>
+	<script th:src="@{/scripts/checkTimeIn.js}"></script>
+	
+	
+</html>
