@@ -1,7 +1,6 @@
 package jp.co.uas.model;
 
 import java.time.OffsetDateTime;
-import java.util.UUID;
 
 import jp.co.uas.entities.TimeIn;
 

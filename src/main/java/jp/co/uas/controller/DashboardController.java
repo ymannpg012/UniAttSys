@@ -3,21 +3,17 @@ package jp.co.uas.controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import jp.co.uas.entities.TimeIn;
+import jp.co.uas.model.PayrollCycleObject;
 import jp.co.uas.model.TimeContextObject;
-import jp.co.uas.model.TimeInListObject;
-import jp.co.uas.model.TimeInObject;
 import jp.co.uas.repository.ApplicantRepository;
-import jp.co.uas.service.CurrentUserService;
 import jp.co.uas.service.TimeContextService;
 import jp.co.uas.service.TimeInService;
+import jp.co.uas.service.TimeLogsService;
+import jp.co.uas.service.helper.CurrentUserService;
 
-import java.time.OffsetDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +38,8 @@ public class DashboardController {
 	@Autowired
 	TimeContextService timeContext;
 
+	@Autowired
+	TimeLogsService timeLogs;
 	
 	@GetMapping("/dashboard")
 	public String launchDashoard(Model model) {
@@ -64,22 +62,38 @@ public class DashboardController {
 		
 	}
 	
-	@GetMapping("/logs-summary")
-	public String launchSummary(Model model){
-		
-		return "summary";
+//	@GetMapping("/logs-summary")
+//	public String launchSummary(Model model){
+//		
+//		return "summary";
+//	
+//	}
+//	
+//	@PostMapping("/logs-summary")
+//	@ResponseBody
+//	public List<Map<String, String>> timeInList(){
+//		
+//		List<Map<String, String>> records = timeInService.listTimeIns();
+//		
+//		System.out.println(records);
+//		
+//		return records;
+//	}
 	
+	
+	@GetMapping("/timeLogs")
+	public String launchTimeLogs(Model model) {
+		
+		return "timeLogs";
+		
 	}
 	
-	@PostMapping("/logs-summary")
+	@PostMapping("/timeLogs")
 	@ResponseBody
-	public List<Map<String, String>> timeInList(){
+	public PayrollCycleObject takePayrollCycleData(@RequestParam("assignment") String assignment) {
 		
-		List<Map<String, String>> records = timeInService.listTimeIns();
+		return timeLogs.fetchPayrollCycleData(assignment);
 		
-		System.out.println(records);
-		
-		return records;
 	}
 	
 	@PostMapping("/checkTimeIn") 
@@ -90,6 +104,7 @@ public class DashboardController {
 		
 	}
 	
+
 //	@GetMapping("/{id}")
 //	public Applicant getById(@PathVariable("id") UUID id) {
 //	    return repo.findById(id).orElseThrow(() -> new RuntimeException("Not found"));

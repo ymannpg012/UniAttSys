@@ -1,4 +1,4 @@
-package jp.co.uas.service;
+package jp.co.uas.service.helper;
 
 import java.util.UUID;
 
