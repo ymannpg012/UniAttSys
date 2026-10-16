@@ -1,0 +1,15 @@
+#ignore everything
+#*
+
+# Allow directories (so Git can descend)
+#!*/
+
+#Allow only folders that holds the codes
+#!src/
+#!src/main/**
+
+src/main/resources/application.properties
+
+#bin
+
+#.gradle

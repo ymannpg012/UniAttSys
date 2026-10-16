@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+	
+	<head>
+	
+		<link rel="stylesheet" th:href="@{/styles/common.css}">
+		
+	</head>
+	<body>
+	
+		<div class="main">
+		
+			<p>PAYROLL CYCLE CREATION</p>
+		
+			<label for="payroll-type">Type</label>
+			<select id="payroll-type" class="payroll-type">
+				<option value="monthly">Monthly</option>
+				<option value="bi-monthly">Bi-monthly</option>
+				<option value="weekly">Weekly</option>
+				<option value="daily">Daily</option>
+				<option value="custom">Custom</option>
+			</select>
+			
+			<div id="custom-payroll-duration"></div>
+		
+			<label for="payroll-start">Start:&nbsp;</label>
+			<input type="date" id="payroll-start">
+			
+			<button id="createPayroll">Create</button>
+		
+			<br><br>	
+			
+			<label for="selection">Assigned to:&nbsp;</label>
+			<select id="selection" class="payroll-assignment"></select>
+			
+			<br>
+			
+			<button id="publish">Publish</button>
+			
+			<h3>Cycles</h3>
+			<div id="cycles">
+				<table>
+            		<thead>
+                		<tr>
+							<th>Number</th>
+                    		<th>Start</th>
+                    		<th>End</th>
+                		</tr>
+            		</thead>
+            		<tbody>
+            			<tr>
+							<td>1</td>
+                			<td>---</td>
+                			<td>---</td>
+            			</tr>
+            		</tbody>
+        		</table>
+			</div>
+			
+		</div>
+	
+	</body>
+	
+	<script th:src="@{/scripts/library/jquery-3.7.1.min.js}"></script>
+	<script type="module" th:src="@{/scripts/payroll/planning.js}"></script>
+	<script type="module" th:src="@{/scripts/common/tools.js}"></script>
+	
+	
+</html>
+

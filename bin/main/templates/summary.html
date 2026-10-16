@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<link rel="stylesheet" th:href="@{styles/common.css}">
+	</head>
+	
+	<body>
+		
+		<h1>Time-ins</h1>
+		
+		<label for="month">Month:&nbsp;</label>
+		
+		<select class="month" id="month">
+			<option value="01">January</option>
+			<option value="02">February</option>
+			<option value="03">March</option>
+			<option value="04">April</option>
+			<option value="05">May</option>
+			<option value="06">June</option>
+			<option value="07">July</option>
+			<option value="08">August</option>
+			<option value="09">September</option>
+			<option value="10">October</option>
+			<option value="11">November</option>
+			<option value="12">December</option>
+		</select>
+		
+		<table>
+			<thead>
+				<tr>
+					<td>Date</td>
+					<td>Time</td>
+				</tr>
+			</thead>			
+			<tbody>
+			</tbody>
+		</table>
+		
+	</body>
+	
+	<script th:src="@{/scripts/library/jquery-3.7.1.min.js}"></script>
+	<script th:src="@{/scripts/listTimeLogs.js}"></script>
+	
+	
+</html>
