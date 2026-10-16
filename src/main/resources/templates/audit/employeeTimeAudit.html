@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<link rel="stylesheet" th:href="@{styles/common.css}">
+	</head>
+	
+	<body>
+		
+		<label for="selection">Employee Roles</label>
+		<select id="selection"></select><br>
+		
+		
+		<table>
+			<thead>
+				<tr>
+					<td>Employee Names</td>
+				</tr>
+			</thead>
+			<tbody id="employees"></tbody>
+		</table>
+		
+		<label for="test">Period</label>
+		<select id="test"></select>
+		
+		<table>
+			<thead>
+				<tr>
+					<td>DAY</td>
+					<td>TIME-IN</td>
+					<td>TIME-OUT</td>
+				<tr>
+			</thead>
+			<tbody id="dates"></tbody>
+		</table>
+		
+	</body>
+	
+	<script th:src="@{/scripts/library/jquery-3.7.1.min.js}"></script>
+	<script type="module" th:src="@{/scripts/audit/audittingEmployee.js}"></script>
+	<script type="module" th:src="@{/scripts/common/calendarCreation.js}"></script>
+	<script type="module" th:src="@{/scripts/common/tools.js}"></script>
+	
+</html>

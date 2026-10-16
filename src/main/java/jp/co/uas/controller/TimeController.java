@@ -8,10 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import jp.co.uas.model.TimeOutObject;
-import jp.co.uas.service.CurrentUserService;
 import jp.co.uas.service.TimeInService;
 import jp.co.uas.service.TimeOutService;
+import jp.co.uas.service.helper.CurrentUserService;
 
 @Controller
 public class TimeController {

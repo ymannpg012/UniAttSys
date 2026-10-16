@@ -12,12 +12,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import jp.co.uas.entities.TimeIn;
-import jp.co.uas.entities.TimeOut;
 import jp.co.uas.entities.UserCredentials;
 import jp.co.uas.model.TimeInObject;
 import jp.co.uas.model.TimeOutObject;
 import jp.co.uas.repository.TimeInRepository;
 import jp.co.uas.repository.TimeOutRepository;
+import jp.co.uas.service.helper.CurrentUserService;
 import jp.co.uas.repository.ApplicantRepository;
 
 @Service
@@ -76,7 +76,7 @@ public class TimeInService {
 																     
 																}).toList();
 		
-		System.out.println(records + "this");
+		System.out.println(records);
 		
 		return result;
 		
@@ -84,14 +84,13 @@ public class TimeInService {
 	
 	public boolean isTimeInAllowed() {
 		
-		Instant fetchedLastTimeIn = time_in.findLastTimeInDate(currentUser.getCurrentUserId());
+		Instant fetchedLastTimeIn = time_in.findLastTimeInDateByID(currentUser.getCurrentUserId());
 		
 		if(fetchedLastTimeIn == null) {
 			return true;
 		}
 		
 		OffsetDateTime processedLastTimeIn = fetchedLastTimeIn.atZone(ZoneId.systemDefault()).toOffsetDateTime();
-		
 		String dateNow = util.dateFormatter(OffsetDateTime.now(ZoneId.of("Asia/Manila")));
 		String lastTimeIn = util.dateFormatter(processedLastTimeIn);
 		
@@ -109,12 +108,10 @@ public class TimeInService {
 	public TimeOutObject takeLastTimeInID() {
 		
 		TimeOutObject timeOut = new TimeOutObject();
-		
 		UUID fetchedLastTimeInID = time_in.findLastTimeInID(currentUser.getCurrentUserId());
+		timeOut.setTimeInOrigin(fetchedLastTimeInID);
 		
 		System.out.println("timeOutOrigin: " + timeOut.getTimeInOrigin());
-		
-		timeOut.setTimeInOrigin(fetchedLastTimeInID);
 		
 		return timeOut;
 		
@@ -123,7 +120,6 @@ public class TimeInService {
 	public TimeIn takeTimeInOrigin() {
 		
 		TimeOutObject timeOut = takeLastTimeInID();
-		
 		TimeIn timeInOrigin = time_in.findByTimeInID(timeOut.getTimeInOrigin());
 		
 		return timeInOrigin;
@@ -132,17 +128,12 @@ public class TimeInService {
 	
 	public TimeInObject takeLastTimeIn() {
 		
-		Instant fetchedLastTimeIn = time_in.findLastTimeInDate(currentUser.getCurrentUserId());
-		
+		Instant fetchedLastTimeIn = time_in.findLastTimeInDateByID(currentUser.getCurrentUserId());
 		OffsetDateTime processedLastTimeIn = fetchedLastTimeIn.atZone(ZoneId.systemDefault()).toOffsetDateTime();
-		
 		TimeInObject timeIn = new TimeInObject(processedLastTimeIn);
 		
-		String lastTimeInDate = util.dateFormatter(processedLastTimeIn);
-		String lastTimeInTime = util.timeFormatter(processedLastTimeIn);
-		
-		timeIn.setLastTimeInDate(lastTimeInDate);
-		timeIn.setLastTimeInTime(lastTimeInTime);
+		timeIn.setLastTimeInDate(util.dateFormatter(processedLastTimeIn));
+		timeIn.setLastTimeInTime(util.timeFormatter(processedLastTimeIn));
 		
 		return timeIn;
 	}

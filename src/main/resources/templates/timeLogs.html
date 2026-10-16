@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+
+	<head>
+		<link rel="stylesheet" th:href="@{styles/common.css}">
+	</head>
+	<body>
+	
+		<select id="test"></select>
+		
+		<p id="values"></p>
+		
+		<table>
+			<thead>
+				<tr>
+					<td>DAY</td>
+					<td>TIME-IN</td>
+					<td>TIME-OUT</td>
+				<tr>
+			</thead>
+			<tbody id="dates"></tbody>
+		</table>
+	
+		<script th:src="@{/scripts/library/jquery-3.7.1.min.js}"></script>
+		<script type="module" th:src="@{/scripts/timeLogs.js}"></script>
+		<script type="module" th:src="@{/scripts/common/calendarCreation.js}"></script>
+		<script type="module" th:src="@{/scripts/common/tools.js}"></script>
+		
+	</body>
+
+</html>

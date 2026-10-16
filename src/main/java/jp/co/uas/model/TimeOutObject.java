@@ -3,7 +3,6 @@ package jp.co.uas.model;
 
 import java.util.UUID;
 
-import jp.co.uas.entities.TimeIn;
 
 public class TimeOutObject {
 	
@@ -35,6 +34,12 @@ public class TimeOutObject {
 	
 	public UUID getTimeInOrigin() {
 		return this.timeInOrigin;
+	}
+	
+	@Override
+	public String toString() {
+		return "TimeOutObject [latestTimeOutDate=" + latestTimeOutDate + ", latestTimeOutTime=" + latestTimeOutTime
+				+ ", timeInOrigin=" + timeInOrigin + "]";
 	}
 	
 }
