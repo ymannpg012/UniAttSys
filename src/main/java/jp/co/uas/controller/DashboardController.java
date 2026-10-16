@@ -62,25 +62,6 @@ public class DashboardController {
 		
 	}
 	
-//	@GetMapping("/logs-summary")
-//	public String launchSummary(Model model){
-//		
-//		return "summary";
-//	
-//	}
-//	
-//	@PostMapping("/logs-summary")
-//	@ResponseBody
-//	public List<Map<String, String>> timeInList(){
-//		
-//		List<Map<String, String>> records = timeInService.listTimeIns();
-//		
-//		System.out.println(records);
-//		
-//		return records;
-//	}
-	
-	
 	@GetMapping("/timeLogs")
 	public String launchTimeLogs(Model model) {
 		
