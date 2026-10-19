@@ -29,7 +29,7 @@ public class SecurityConfig {
     	return http
         	.csrf(csrf -> csrf.disable())
         	.authorizeHttpRequests(auth -> auth
-        			.requestMatchers("/login").permitAll() //"requestMatchers("/login")" indicates that this endpoint is accessible even if the user is not yet authenticated.
+        			.requestMatchers("/login", "/styles/**").permitAll() //"requestMatchers("/login")" indicates that this endpoint is accessible even if the user is not yet authenticated.
         												   // it makes sense to expose this endpoint because this holds the login form with which the authentication will take place.
         			
         			.anyRequest().authenticated()		   // this indicates that all other requests will only be accessible if the user is already authenticated.
