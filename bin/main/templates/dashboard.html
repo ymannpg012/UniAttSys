@@ -2,17 +2,20 @@
 <html  xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<link rel="stylesheet" th:href="@{styles/common.css}">
+		<link rel="stylesheet" th:href="@{styles/navbar.css}">
 	</head>
 	
 	<body>
-		<p>test</p>
+	
+		<div th:replace="~{fragments/navbar :: top-navbar}"></div>
+		<div th:replace="~{fragments/navbar :: navbar}"></div>
 		
-		<input id="time-in" type="button" value="time-in" onclick="setTimeIn()"/>
-		<input id="time-out" type="button" value="time-out" onclick="setTimeOut()"/>
+		<div class="main" id="main">
+			
+			<input id="time-in" type="button" value="time-in" onclick="setTimeIn()"/>
+			<input id="time-out" type="button" value="time-out" onclick="setTimeOut()"/>
 		
-		<a th:href="@{/timeLogs}">Logs</a>
-		<a th:href="@{/payroll/create}">Payroll</a>
-		<a th:href="@{/auditTime}">Audit Employee</a>
+		</div>
 		
 	</body>
 	

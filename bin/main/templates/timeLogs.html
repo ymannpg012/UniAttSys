@@ -3,24 +3,32 @@
 
 	<head>
 		<link rel="stylesheet" th:href="@{styles/common.css}">
+		<link rel="stylesheet" th:href="@{styles/navbar.css}">
 	</head>
 	<body>
 	
-		<select id="test"></select>
-		
-		<p id="values"></p>
-		
-		<table>
-			<thead>
-				<tr>
-					<td>DAY</td>
-					<td>TIME-IN</td>
-					<td>TIME-OUT</td>
-				<tr>
-			</thead>
-			<tbody id="dates"></tbody>
-		</table>
+		<div th:replace="~{fragments/navbar :: top-navbar}"></div>
+		<div th:replace="~{fragments/navbar :: navbar}"></div>
 	
+		<div class="main" id="main">
+		
+			<select id="test"></select>
+		
+			<p id="values"></p>
+		
+			<div id="table-container">
+				<table>
+					<thead>
+						<tr>
+							<td>DAY</td>
+							<td>TIME-IN</td>
+							<td>TIME-OUT</td>
+						<tr>
+					</thead>
+					<tbody id="dates"></tbody>
+				</table>
+			</div>
+		</div>
 		<script th:src="@{/scripts/library/jquery-3.7.1.min.js}"></script>
 		<script type="module" th:src="@{/scripts/timeLogs.js}"></script>
 		<script type="module" th:src="@{/scripts/common/calendarCreation.js}"></script>

@@ -1,0 +1,13 @@
+.working-days-subcontainer{
+	
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	
+}
+
+.working-days-subcontainer ul li{
+	
+	list-style: none;
+	
+}

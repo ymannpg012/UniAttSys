@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+	<head>
+		
+	</head>
+	
+	<body>
+		<nav id="top-navbar" th:fragment = "top-navbar">
+			<p>Unified Attendance System</p>
+		</nav>>
+	
+		<nav id="side-navbar" th:fragment="navbar">
+		
+			<ul>
+				<li>
+					<a th:href="@{/dashboard}">Dashboard</a>
+				</li>
+				<li>
+					<a th:href="@{/timeLogs}">Time Logs</a>
+				</li>
+				<li>
+					<a th:href="@{/payroll/create}">Payroll</a>
+				</li>
+				<li>
+					<a th:href="@{/auditTime}">Audit Employee</a>
+				</li>
+				
+			</ul>
+		</nav>
+		
+	</body>
+</html>

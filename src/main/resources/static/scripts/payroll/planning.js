@@ -12,6 +12,8 @@ $(document).ready(async function(){
 		);
 	});
 	
+	createPayrollCycle();
+	
 })
 
 var schedules = [];
@@ -121,6 +123,8 @@ function displayPayrollCycle(schedules) {
 	$("table").remove();
 	
     let html = `
+	
+	<div id="table-container">
         <table>
             <thead>
                 <tr>
@@ -147,6 +151,7 @@ function displayPayrollCycle(schedules) {
     html += `
             </tbody>
         </table>
+	</div>
     `;
 
     $('#cycles').html(html);
@@ -213,6 +218,11 @@ function storePlan(){
 		      },
 		success: function(response) {
 		    console.log("Saved successfully", response);
+			
+			alert("payroll created successfully.");
+			
+			$("#publish").prop("disabled", true);
+			
 		},
 		error: function(xhr, status, error) {
 		    console.error("Error:", error);

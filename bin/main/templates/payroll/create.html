@@ -2,61 +2,146 @@
 <html  xmlns:th="http://www.thymeleaf.org">
 	
 	<head>
-	
 		<link rel="stylesheet" th:href="@{/styles/common.css}">
-		
+		<link rel="stylesheet" th:href="@{/styles/navbar.css}">
+		<link rel="stylesheet" th:href="@{/styles/payroll/payroll-creation.css}">
 	</head>
 	<body>
-	
-		<div class="main">
 		
-			<p>PAYROLL CYCLE CREATION</p>
+		<div th:replace="~{fragments/navbar :: top-navbar}"></div>
+		<div th:replace="~{fragments/navbar :: navbar}"></div>
 		
-			<label for="payroll-type">Type</label>
-			<select id="payroll-type" class="payroll-type">
-				<option value="monthly">Monthly</option>
-				<option value="bi-monthly">Bi-monthly</option>
-				<option value="weekly">Weekly</option>
-				<option value="daily">Daily</option>
-				<option value="custom">Custom</option>
-			</select>
-			
-			<div id="custom-payroll-duration"></div>
+		<div class="main" id="main">
 		
-			<label for="payroll-start">Start:&nbsp;</label>
-			<input type="date" id="payroll-start">
+			<div class="sub-main">
 			
-			<button id="createPayroll">Create</button>
+				<div class="parameters-panel">
+				
+					<p>PAYROLL CYCLE CREATION</p>
 		
-			<br><br>	
+					<label for="payroll-type">Type</label>
+					<select id="payroll-type" class="payroll-type">
+						<option value="monthly">Monthly</option>
+						<option value="bi-monthly">Bi-monthly</option>
+						<option value="weekly">Weekly</option>
+						<option value="daily">Daily</option>
+						<option value="custom">Custom</option>
+					</select>
 			
-			<label for="selection">Assigned to:&nbsp;</label>
-			<select id="selection" class="payroll-assignment"></select>
+					<div id="custom-payroll-duration"></div>
+					
+					<div class="shift-container">
+					
+						<p>Time of Shift</p>
+						
+						<label for="shift-start">Start</label>
+						<input type="time" id="shift-start">
+						
+						<br>
+						<label for="shift-end">End</label>
+						<input type="time" id="shift-end">
+					
+					</div>
+					
+					<div class="working-days-container">
+						<div class="working-days-subcontainer">
+							
+							<p>Working Days:</p>
+							
+							<div class="preset-container">
+								
+								<ul>
+									
+									<li>
+									
+									</li>
+								
+								</ul>
+															
+							</div>
+							
+							<ul>
+								<li>
+									<input type="radio" value="Sunday" id="sunday-radio">
+									<label for="sunday-radio">SU</label>
+								</li>
+								
+								<li>
+									<input type="radio" value="Monday" id="monday-radio">
+									<label for="monday-radio">MO</label>
+								</li>
+								
+								<li>
+									<input type="radio" value="Tuesday" id="tuesday-radio">
+									<label for="tuesday-radio">TU</label>
+								</li>
+								
+								<li>
+									<input type="radio" value="Wednesday" id="wednesday-radio">
+									<label for="wednesday-radio">WE</label>
+								</li>
+								
+								<li>
+									<input type="radio" value="Thursday" id="thursday-radio">
+									<label for="thursday-radio">TH</label>																											
+								</li>
+								
+								<li>
+									<input type="radio" value="Friday" id="friday-radio">
+									<label for="friday-radio">FR</label>
+								</li>
+								
+								<li>
+									<input type="radio" value="Saturday" id="saturday-radio">
+									<label for="saturday-radio">SA</label>
+								</li>
+							
+							</ul>												
+						</div>
+					</div>
+		
+					<br>
+					<label for="payroll-start">Start Date:&nbsp;</label>
+					<input type="date" id="payroll-start">
 			
-			<br>
+					<button id="createPayroll">Create</button>
+		
+					<br><br>	
 			
-			<button id="publish">Publish</button>
+					<label for="selection">Assigned to:&nbsp;</label>
+					<select id="selection" class="payroll-assignment"></select>
 			
-			<h3>Cycles</h3>
-			<div id="cycles">
-				<table>
-            		<thead>
-                		<tr>
-							<th>Number</th>
-                    		<th>Start</th>
-                    		<th>End</th>
-                		</tr>
-            		</thead>
-            		<tbody>
-            			<tr>
-							<td>1</td>
-                			<td>---</td>
-                			<td>---</td>
-            			</tr>
-            		</tbody>
-        		</table>
+					<br>
+			
+					<button id="publish">Publish</button>
+					
+				</div>
+				
+				<div class="output-panel">
+				
+					<h3>Cycles</h3>
+					<div id="cycles">
+							<table>
+            					<thead>
+                					<tr>
+										<th>Number</th>
+                	  		  			<th>Start</th>
+            	        				<th>End</th>
+            	    				</tr>
+            					</thead>
+            					<tbody>
+            						<tr>
+										<td>1</td>
+          		      					<td>---</td>
+           		     					<td>---</td>
+            						</tr>
+           	 					</tbody>
+        					</table>
+        				
+					</div>
+					
+				</div>
 			</div>
-			
 		</div>
 	
 	</body>

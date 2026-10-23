@@ -5,6 +5,9 @@ export function launchCalendarCreation(response, displayNode, userId){
 		const cycles = JSON.parse(response.cycleDates);
 		const cycleDuration = response.cycleDuration;
 		
+		//deletePeriodDisplayNode(displayNode);
+		//displayPeriodNode(displayNode);
+		
 		displayAllPeriodsInDropdown(cycles, displayNode);
 		displayPeriodForCurrentDate(cycles, displayNode);		
 		displayCycleValues();
@@ -49,7 +52,7 @@ function displayAllPeriodsInDropdown(cycles, displayNode){
 	
 	cycles.forEach(cycle => {
 		displayNode.append(
-			`<option value='{"cycleStart":"${cycle.cycleStart}","cycleEnd":"${cycle.cycleEnd}"}'>${cycle.index}</option>`
+			`<option value='{"cycleStart":"${cycle.cycleStart}","cycleEnd":"${cycle.cycleEnd}"}'>Start:${cycle.cycleStart} - End:${cycle.cycleEnd}</option>`
 		);
 	});
 	
@@ -155,9 +158,9 @@ function mapMultiMonthCalendar(cycleStart, cycleEnd, cycleParams, days){
 				
 	}
 			
-	for(let loopIndex = 0; loopIndex <= months.length; loopIndex++){
+	for(let i = 0; i <= months.length; i++){
 				
-		let currentMonth = months[loopIndex];
+		let currentMonth = months[i];
 		let currentMonthMaxDays = new Date(cycleParams.startRangeYear, currentMonth, 0).getDate();
 				
 		let dayIndex = 0;
@@ -272,8 +275,8 @@ function displayNotNullTime(index, day){
 		$('#dates').append(`
 						<tr>
 							<td>${index}</td>
-							<td>${day.timeIn}</td>
-							<td>${day.timeOut}</td>
+							<td class="data">${day.timeIn}</td>
+							<td class="data">${day.timeOut}</td>
 						</tr>			
 					`)
 	}else{
@@ -281,8 +284,8 @@ function displayNotNullTime(index, day){
 		$('#dates').append(`
 						<tr>
 							<td>${index}</td>
-							<td>${day.timeIn}</td>
-							<td></td>
+							<td class="data">${day.timeIn}</td>
+							<td class="data"></td>
 						</tr>			
 					`)
 	}
@@ -294,11 +297,34 @@ function displayNullTime(index){
 	$('#dates').append(`
 						<tr>
 							<td>${index}</td>
-							<td></td>
-							<td></td>
+							<td class="data"></td>
+							<td class="data"></td>
 						</tr>		
 					`)
 					
 }
 
+/**
+ 
+function displayPeriodNode(displayNode){
+	
+	console.log(displayNode)
+	
+	$("#contain_period").append(`
+									<select id=${displayNode}><select>
+								`)
+	
+}
+
+function deletePeriodDisplayNode(displayNode){
+	
+	let thisDisplayNode = '#' + displayNode;
+	
+	console.log(thisDisplayNode)
+	
+	$("#label").remove();
+	$(thisDisplayNode).remove();
+	
+}
+**/
 

@@ -2,36 +2,63 @@
 <html  xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<link rel="stylesheet" th:href="@{styles/common.css}">
+		<link rel="stylesheet" th:href="@{styles/navbar.css}">
 	</head>
 	
 	<body>
 		
-		<label for="selection">Employee Roles</label>
-		<select id="selection"></select><br>
+		<div th:replace="~{fragments/navbar :: top-navbar}"></div>
+		<div th:replace="~{fragments/navbar :: navbar}"></div>
+		
+		<div class="main" id="main">
+		
+			<div class="sub-main">
+			
+				<div class="employees-container">
+				
+					<label for="selection">Employee Roles</label>
+					<select id="selection"></select><br>
 		
 		
-		<table>
-			<thead>
-				<tr>
-					<td>Employee Names</td>
-				</tr>
-			</thead>
-			<tbody id="employees"></tbody>
-		</table>
+					<table>
+						<thead>
+							<tr>
+								<td>Employee Names</td>
+							</tr>
+						</thead>
+						<tbody id="employees"></tbody>
+					</table>
+					
+				</div>
+				
+			<!--<div id="contain_period"></div>-->
+			
+				<div class="output-panel">
+				
+					<label for="test">Period</label>
+					<div id="contain_period">
+						<select id="test"></select>
+					</div>
 		
-		<label for="test">Period</label>
-		<select id="test"></select>
-		
-		<table>
-			<thead>
-				<tr>
-					<td>DAY</td>
-					<td>TIME-IN</td>
-					<td>TIME-OUT</td>
-				<tr>
-			</thead>
-			<tbody id="dates"></tbody>
-		</table>
+					<div id="table-container">
+				
+						<table>
+							<thead>
+								<tr>
+									<td>DAY</td>
+									<td>TIME-IN</td>
+									<td>TIME-OUT</td>
+								<tr>
+							</thead>
+							<tbody id="dates"></tbody>
+						</table>
+					
+					</div>
+				
+				</div>
+				
+			</div>
+		</div>
 		
 	</body>
 	

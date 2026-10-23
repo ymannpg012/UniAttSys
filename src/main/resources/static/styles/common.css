@@ -1,6 +1,50 @@
 body{
 	background-color: black;
 	color: white;
+	font-family: Verdana, Geneva, Tahoma, sans-serif;
+	display: grid;
+	width:	100vw;
+	height: 100vh;
+	margin: 0;
+	overflow: hidden;
+	grid-template-columns: repeat(10, 10%);
+	grid-template-rows: repeat(10, 10%);
+}
+
+#top-navbar{
+	
+	grid-row: 1/2;
+	grid-column: 1/11;
+	
+}
+
+#side-navbar{
+	
+	grid-row: 2/11;
+	
+}
+
+#main{
+	
+	grid-column: 2/11;
+	grid-row: 2/11;
+	padding: 20px;
+	
+}
+
+.sub-main{
+	
+	position: relative;
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	display: flex;
+}
+
+.sub-main div:nth-child(1){
+	
+	margin-right: 5%;
+	
 }
 
 table {
@@ -17,8 +61,16 @@ td{
 	padding: 3px 25px;
 }
 
-tbody tr td:hover{
+tbody tr:hover td.data{
 	background-color: #27DAF5;
 	color: black;
 	cursor: pointer;
+}
+
+#table-container{
+	
+	height: 95%;
+	width: 100%;
+	overflow-y: auto;
+	
 }
