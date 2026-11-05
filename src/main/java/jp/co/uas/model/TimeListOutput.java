@@ -32,5 +32,12 @@ public class TimeListOutput {
 	public void setTimeOut(String timeOut) {
 		this.timeOut = timeOut;
 	}
+
+	@Override
+	public String toString() {
+		return "TimeListOutput [date=" + date + ", timeIn=" + timeIn + ", timeOut=" + timeOut + "]";
+	}
+	
+	
 	
 }

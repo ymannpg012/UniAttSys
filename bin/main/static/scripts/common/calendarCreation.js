@@ -4,16 +4,18 @@ export function launchCalendarCreation(response, displayNode, userId){
 	
 		const cycles = JSON.parse(response.cycleDates);
 		const cycleDuration = response.cycleDuration;
-		
+
 		//deletePeriodDisplayNode(displayNode);
 		//displayPeriodNode(displayNode);
+		
+		console.log(cycles);
 		
 		displayAllPeriodsInDropdown(cycles, displayNode);
 		displayPeriodForCurrentDate(cycles, displayNode);		
 		displayCycleValues();
 		
 		let cycleRange = takePeriodStartAndEnd(displayNode);
-		
+
 		fetchTimeList(cycleRange.cycleStart, cycleRange.cycleEnd, cycleDuration, userId);
 		
 }
@@ -52,7 +54,7 @@ function displayAllPeriodsInDropdown(cycles, displayNode){
 	
 	cycles.forEach(cycle => {
 		displayNode.append(
-			`<option value='{"cycleStart":"${cycle.cycleStart}","cycleEnd":"${cycle.cycleEnd}"}'>Start:${cycle.cycleStart} - End:${cycle.cycleEnd}</option>`
+			`<option value='{"cycleStart":"${cycle.cycleStart}","cycleEnd":"${cycle.cycleEnd}"}'>${cycle.index}</option>`
 		);
 	});
 	
@@ -79,15 +81,23 @@ export function displayCycleValues(){
 
 export function fetchTimeList(cycleStart, cycleEnd, cycleDuration, userId){
 	
+	console.log(cycleEnd)
+	
+	let lowerCycleEnd = convertCycleEndToLowerLimit(cycleEnd);
+	
+	console.log(cycleEnd)
+	
 	$.ajax({
 		url: "/payroll/map",
 		type: 'POST',
 		data:{
 			startDay: cycleStart,
-			endDay: cycleEnd,
+			endDay: lowerCycleEnd,
 			userId: userId
 		},
 		success: function(response){
+			
+			console.log(response);
 			
 			const cycleParam = takeCycleParameters(cycleStart, cycleEnd);
 			
@@ -99,6 +109,15 @@ export function fetchTimeList(cycleStart, cycleEnd, cycleDuration, userId){
 		}
 	})
 	
+}
+
+function convertCycleEndToLowerLimit(cycleEnd){
+	
+	let cycleEndYear = Number(cycleEnd.split('-')[0]);
+	let cycleEndMonth = Number(cycleEnd.split('-')[1]);
+	let cycleEndDay = Number(cycleEnd.split('-')[2]) + 1;
+	
+	return cycleEndYear + '-' + cycleEndMonth + '-' + cycleEndDay; 
 }
 
 

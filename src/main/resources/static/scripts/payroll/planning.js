@@ -231,4 +231,187 @@ function storePlan(){
 	
 	console.log(schedules);
 	console.log(cycleType);
+
 }
+	
+let selectedDays = [];
+	
+$('.day-options').on('click', function(){
+		
+	$('#custom').prop('checked', true);
+	$('.day-options').prop('disabled', false);
+
+})
+	
+$('.preset-options').on('change', function(){
+		
+		selectedDays = [];
+		let checkboxNode = '';
+		let selected = $(this).val();
+		$('.day-options').prop('checked', false);
+		$('.day-options').prop('disabled', true);
+		
+		switch(selected){
+			
+			case "whole-week":
+					
+					checkboxNode = $('.day-options');
+			
+					checkboxNode.prop('checked', true);
+					checkboxNode.prop('disabled', false);
+					takeDayOptionValues(checkboxNode);
+					
+					return;
+					
+			case "weekdays":
+					
+					checkboxNode = $('.day-option-weekday');
+			
+					checkboxNode.prop('checked', true);
+					checkboxNode.prop('disabled', false);
+					takeDayOptionValues(checkboxNode);
+					
+					return;
+					
+			case "weekends":
+				
+					checkboxNode = $('.day-option-weekend');		
+			
+					checkboxNode.prop('checked', true);
+					checkboxNode.prop('disabled', false);
+					takeDayOptionValues(checkboxNode);
+					
+					return;
+					
+			case "custom":
+					
+					$('.day-options').prop('disabled', false);
+					
+					return;
+			
+			case "irregular-schedule":
+				
+					$('.day-options').prop('disabled', true);			
+					
+					return;
+					
+			default:
+				
+					return;
+		}
+		
+		
+	})
+
+$('.day-options').on('change', function(){
+	
+	let selectedDay = $(this);
+	
+	if(selectedDay.is(':checked')){
+		
+		//add the selected day to selectedDays array
+		selectedDays.push(selectedDay.val());
+		
+	}else{
+		
+		//filter through the contents of the array and remove the matching value
+		selectedDays = selectedDays.filter(day => day != selectedDay.val());
+		
+	}
+	
+	console.log("selectedDays after:", selectedDays)
+	console.log(checkPresetCompatibility(selectedDays))
+	
+	selectPreset(checkPresetCompatibility(selectedDays));
+	
+})
+
+function takeDayOptionValues(optionNode){
+
+	optionNode.each(function() {
+	    selectedDays.push($(this).val());
+	});
+	
+	console.log(selectedDays)
+}
+
+function checkPresetCompatibility(selectedDays){
+	
+	if(selectedDays.length == 7){
+		
+		return 'wholeweek';
+		
+	}
+	
+	if(selectedDays.length == 2){
+		
+		let counter = 0;
+					
+		for(let i = 0; i <= selectedDays.length; i++){
+						
+			if(selectedDays[i] == 'Saturday' ||
+			   selectedDays[i] == 'Sunday'){
+							
+				counter++;
+							
+			}
+						
+		}
+		
+		if(counter == 2){
+			
+			return 'weekend';
+			
+		}
+		
+	}else if(selectedDays.length == 5){
+		
+		let counter = 0;
+							
+		for(let i = 0; i <= selectedDays.length; i++){
+								
+			if(selectedDays[i] == 'Monday' ||
+			   selectedDays[i] == 'Tuesday' ||
+			   selectedDays[i] == 'Wednesday' ||
+			   selectedDays[i] == 'Thursday' ||
+			   selectedDays[i] == 'Friday'){
+									
+					counter++;
+									
+			}
+								
+		}
+				
+		if(counter == 5){
+					
+			return 'weekdays';
+					
+		}
+		
+	}
+	
+	return 'custom';
+}
+
+function selectPreset(preset){
+	
+	switch(preset){
+		
+		case "wholeweek":
+			$('#whole-week').prop('checked', true);
+				break;
+		
+		case "weekdays":
+			$('#weekdays').prop('checked', true);
+				break;
+									
+		case "weekend":
+			$('#weekends').prop('checked', true);
+				break;			
+		
+		default:
+			$('#custom').prop('checked', true);
+	}
+	
+}
+

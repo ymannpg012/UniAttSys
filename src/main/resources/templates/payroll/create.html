@@ -30,83 +30,110 @@
 			
 					<div id="custom-payroll-duration"></div>
 					
-					<div class="shift-container">
-					
-						<p>Time of Shift</p>
-						
-						<label for="shift-start">Start</label>
-						<input type="time" id="shift-start">
-						
-						<br>
-						<label for="shift-end">End</label>
-						<input type="time" id="shift-end">
-					
-					</div>
-					
-					<div class="working-days-container">
-						<div class="working-days-subcontainer">
-							
-							<p>Working Days:</p>
-							
-							<div class="preset-container">
-								
-								<ul>
-									
-									<li>
-									
-									</li>
-								
-								</ul>
-															
-							</div>
-							
-							<ul>
-								<li>
-									<input type="radio" value="Sunday" id="sunday-radio">
-									<label for="sunday-radio">SU</label>
-								</li>
-								
-								<li>
-									<input type="radio" value="Monday" id="monday-radio">
-									<label for="monday-radio">MO</label>
-								</li>
-								
-								<li>
-									<input type="radio" value="Tuesday" id="tuesday-radio">
-									<label for="tuesday-radio">TU</label>
-								</li>
-								
-								<li>
-									<input type="radio" value="Wednesday" id="wednesday-radio">
-									<label for="wednesday-radio">WE</label>
-								</li>
-								
-								<li>
-									<input type="radio" value="Thursday" id="thursday-radio">
-									<label for="thursday-radio">TH</label>																											
-								</li>
-								
-								<li>
-									<input type="radio" value="Friday" id="friday-radio">
-									<label for="friday-radio">FR</label>
-								</li>
-								
-								<li>
-									<input type="radio" value="Saturday" id="saturday-radio">
-									<label for="saturday-radio">SA</label>
-								</li>
-							
-							</ul>												
-						</div>
-					</div>
-		
 					<br>
 					<label for="payroll-start">Start Date:&nbsp;</label>
 					<input type="date" id="payroll-start">
 			
 					<button id="createPayroll">Create</button>
 		
-					<br><br>	
+					<br><br>
+					
+					<div class="shift-container">
+					
+						<p>Time of Shift</p>
+						
+						<div class="shift-parameter-container">
+							<label for="shift-hours">Hours of shift:</label>
+							<input type="number" id="shift-hours"><br><br>
+						
+							<label for="shift-start">Start</label>
+							<input type="time" id="shift-start">
+							
+							<br>
+							<label for="shift-end">End</label>
+							<input type="time" id="shift-end">
+						</div>
+					</div>
+					
+					<div class="working-days-container">
+						<div class="working-days-subcontainer">
+							
+							<p id="paragraph">Working Days:</p>
+							
+							<div class="preset-container">
+								
+								<ul>
+									
+									<li>
+										<input type="radio" class="preset-options" name="working-days" value="whole-week" id="whole-week">
+										<label for="whole-week">whole week</label>
+									</li>
+									<li>
+										<input type="radio" class="preset-options" name="working-days" value="weekdays" id="weekdays">
+										<label for="weekdays">weekdays</label>
+									</li>
+									<li>
+										<input type="radio" class="preset-options" name="working-days" value="weekends" id="weekends">
+										<label for="weekends">weekends</label>
+									</li>
+									<li>
+										<input type="radio" class="preset-options" name="working-days" value="custom" id="custom">
+										<label for="custom">custom</label>
+									</li>
+									<li>
+										<input type="radio" class="preset-options" name="working-days" value="irregular" id="irregular">
+										<label for="custom">irregular</label>
+									</li>
+								
+								</ul>
+															
+							</div>
+							<div class="days-container">
+							
+								<ul>
+									<li>
+										<input class="day-options day-option-weekend" type="checkbox" value="Sunday" id="sunday-checkbox">
+										<label for="sunday-checkbox">Sunday</label>
+									</li>
+								
+									<li>
+										<input class="day-options day-option-weekday" type="checkbox" value="Monday" id="monday-checkbox">
+										<label for="monday-checkbox">Monday</label>
+									</li>
+								
+									<li>
+										<input class="day-options day-option-weekday" type="checkbox" value="Tuesday" id="tuesday-checkbox">
+										<label for="tuesday-checkbox">Tuesday</label>
+									</li>
+								
+									<li>
+										<input class="day-options day-option-weekday" type="checkbox" value="Wednesday" id="wednesday-checkbox">
+										<label for="wednesday-checkbox">Wednesday</label>
+									</li>
+								
+									<li>
+										<input class="day-options day-option-weekday" type="checkbox" value="Thursday" id="thursday-checkbox">
+										<label for="thursday-checkbox">Thursday</label>																											
+									</li>
+								
+									<li>
+										<input class="day-options day-option-weekday" type="checkbox" value="Friday" id="friday-checkbox">
+										<label for="friday-checkbox">Friday</label>
+									</li>
+								
+									<li>
+										<input class="day-options day-option-weekend" type="checkbox" value="Saturday" id="saturday-checkbox">
+										<label for="saturday-checkbox">Saturday</label>
+									</li>
+							
+								</ul>
+							
+							</div>
+																			
+						</div>
+					</div>
+		
+						
 			
 					<label for="selection">Assigned to:&nbsp;</label>
 					<select id="selection" class="payroll-assignment"></select>
