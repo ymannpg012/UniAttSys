@@ -47,7 +47,6 @@
 
 .output-panel{
 
-	overflow: auto;
 	padding: 20px;
 	
 }
@@ -55,5 +54,20 @@
 .shift-parameter-container{
 	
 	padding-left: 20px;
+	
+}
+
+.parameter-output-preview{
+	
+	display: flex;
+	
+}
+
+#cycles{
+	
+	position: relative;
+	overflow-y: auto;
+	overflow-x: hidden;
+	max-height: 75%;
 	
 }

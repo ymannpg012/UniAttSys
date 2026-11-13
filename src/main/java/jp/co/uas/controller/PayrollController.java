@@ -30,12 +30,25 @@ public class PayrollController {
 	}
 	
 	@PostMapping("/payroll/create")
-	public void storePlan(@RequestParam("schedule") String schedules,
-						  @RequestParam("assignment") UUID assignment,
+	public void storePlan(
 						  @RequestParam("type") String cycleType,
-						  @RequestParam("duration") int cycleDuration) {
+						  @RequestParam("schedule") String schedules,
+						  @RequestParam("duration") int cycleDuration,
+						  @RequestParam("irregularWorkingHours") boolean irregularWorkingHours,
+						  @RequestParam("workingHoursStart") String shiftStartTime,
+						  @RequestParam("workingHoursEnd") String shiftEndTime,
+						  @RequestParam("workingDays") String workingDaysPreset,
+						  @RequestParam("selectedDays") String selectedWorkingDays,
+						  @RequestParam("assignment") UUID assignment) {
 		
-		payrollService.createPayroll(cycleDuration, schedules, assignment, cycleType);
+
+		System.out.println("irregularWorkingHours" + irregularWorkingHours);
+		System.out.println("shiftStartTime" + shiftStartTime);
+		System.out.println("shiftEndTime" + shiftEndTime);
+		System.out.println("workingDaysPreset" + workingDaysPreset);
+		System.out.println("selectedWorkingDays" + selectedWorkingDays);
+		
+		payrollService.createPayroll(cycleType, schedules, cycleDuration, irregularWorkingHours, shiftStartTime, shiftEndTime, workingDaysPreset, selectedWorkingDays, assignment);
 		
 	}
 	

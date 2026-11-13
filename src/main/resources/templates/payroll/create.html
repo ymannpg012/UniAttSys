@@ -5,6 +5,7 @@
 		<link rel="stylesheet" th:href="@{/styles/common.css}">
 		<link rel="stylesheet" th:href="@{/styles/navbar.css}">
 		<link rel="stylesheet" th:href="@{/styles/payroll/payroll-creation.css}">
+		<link rel="stylesheet" th:href="@{/styles/dialog/dialogBox.css}">
 	</head>
 	<body>
 		
@@ -22,7 +23,7 @@
 					<label for="payroll-type">Type</label>
 					<select id="payroll-type" class="payroll-type">
 						<option value="monthly">Monthly</option>
-						<option value="bi-monthly">Bi-monthly</option>
+						<option value="bi_monthly">Bi-monthly</option>
 						<option value="weekly">Weekly</option>
 						<option value="daily">Daily</option>
 						<option value="custom">Custom</option>
@@ -34,7 +35,7 @@
 					<label for="payroll-start">Start Date:&nbsp;</label>
 					<input type="date" id="payroll-start">
 			
-					<button id="createPayroll">Create</button>
+					<button id="createPayroll">Create Calendar</button>
 		
 					<br><br>
 					
@@ -45,13 +46,16 @@
 						<div class="shift-parameter-container">
 							<label for="shift-hours">Hours of shift:</label>
 							<input type="number" id="shift-hours"><br><br>
-						
+							
+							<input type="checkbox" value="irregular-hours" id="irregular-hours">
+							<label for="irregular-hours">irregular-hours</label><br>
+							
 							<label for="shift-start">Start</label>
-							<input type="time" id="shift-start">
+							<input class="shift-input" type="time" id="shift-start">
 							
 							<br>
 							<label for="shift-end">End</label>
-							<input type="time" id="shift-end">
+							<input class="shift-input" type="time" id="shift-end">
 						</div>
 					</div>
 					
@@ -82,7 +86,7 @@
 									</li>
 									<li>
 										<input type="radio" class="preset-options" name="working-days" value="irregular" id="irregular">
-										<label for="custom">irregular</label>
+										<label for="irregular">irregular</label>
 									</li>
 								
 								</ul>
@@ -140,11 +144,37 @@
 			
 					<br>
 			
-					<button id="publish">Publish</button>
+					<button id="create">Create</button>
 					
 				</div>
 				
 				<div class="output-panel">
+				
+				<button id="publish">Publish</button>
+				
+					<div class="parameter-preview">
+					
+						<div class="parameter-output-preview">
+							<p>Payroll Type: </p>
+							<p id="payroll-type-value"></p>
+						</div>
+						
+						<div class="parameter-output-preview">
+							<p>Shift hours: </p>
+							<p id="shift-hours-value"></p>
+						</div>
+						
+						<div class="parameter-output-preview">
+							<p>Work days: </p>
+							<p id="workdays-value"></p>
+						</div>
+						
+						<div class="parameter-output-preview">
+							<p>Assigned to: </p>
+							<p id="assigned-to-value"></p>
+						</div>
+						
+					</div>
 				
 					<h3>Cycles</h3>
 					<div id="cycles">
@@ -168,6 +198,16 @@
 					</div>
 					
 				</div>
+			</div>
+		</div>
+		
+		<div id="dialog_container">
+			<div id="dialog_content">
+			
+				<div class="dialog_header"></div>
+				<div class="dialog_body"></div>
+				<div class="dialog_actions"></div>
+			
 			</div>
 		</div>
 	

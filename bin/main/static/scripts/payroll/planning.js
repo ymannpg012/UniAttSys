@@ -1,5 +1,14 @@
 import {getEmploymentRoles} from "/scripts/common/tools.js";
 
+let cycleType;
+let schedules = [];
+let irregularWorkingHours;
+let workingHoursStart;
+let workingHoursEnd;
+let workingDays;
+let selectedDays = [];
+let assignment;
+
 $(document).ready(async function(){
 
 	const response = await getEmploymentRoles();
@@ -12,11 +21,12 @@ $(document).ready(async function(){
 		);
 	});
 	
-	createPayrollCycle();
+	takeDateToday();
+	//createPayrollCycle();
+	$('#create').prop('disabled', true);
+	$('#publish').prop('disabled', true);
 	
 })
-
-var schedules = [];
 
 $('#payroll-type').on('change', function(){
 	
@@ -46,7 +56,7 @@ $(document).on('blur', '#custom-duration', function() {
 			
 		case 15:
 				
-			$('#payroll-type').val("bi-monthly");			
+			$('#payroll-type').val("bi_monthly");			
 			break;
 				
 		case 7:
@@ -61,10 +71,8 @@ $(document).on('blur', '#custom-duration', function() {
 				
 	}
 
-});
-
-$(document).ready(function(){
-	takeDateToday();
+	checkParameterFilled();
+	
 });
 
 function takeDateToday(){
@@ -165,7 +173,7 @@ function payrollTypeValue(payrollType){
 						
 				return 30;
 				
-			case "bi-monthly":
+			case "bi_monthly":
 					
 				return 15;
 					
@@ -186,12 +194,6 @@ function payrollTypeValue(payrollType){
 	
 }
 
-$('#publish').on('click', function(){
-	
-	storePlan();
-	
-})
-
 
 $('#createPayroll').on('click', function(){
 	
@@ -199,47 +201,13 @@ $('#createPayroll').on('click', function(){
 	
 })
 
-function storePlan(){
-	
-	let assignment = $('#selection').val();
-	let cycleType = $('#payroll-type').val();
-	let cycleDuration = payrollTypeValue(cycleType);
-	
-	console.log(assignment);
-	
-	$.ajax({
-		url: "/payroll/create",
-		type: "POST",
-		data:{
-			   type: cycleType,
-		       assignment: assignment,
-		       schedule: JSON.stringify(schedules),
-			   duration: Number(cycleDuration)
-		      },
-		success: function(response) {
-		    console.log("Saved successfully", response);
-			
-			alert("payroll created successfully.");
-			
-			$("#publish").prop("disabled", true);
-			
-		},
-		error: function(xhr, status, error) {
-		    console.error("Error:", error);
-		}
-	})
-	
-	console.log(schedules);
-	console.log(cycleType);
 
-}
-	
-let selectedDays = [];
 	
 $('.day-options').on('click', function(){
 		
 	$('#custom').prop('checked', true);
 	$('.day-options').prop('disabled', false);
+	checkParameterFilled();
 
 })
 	
@@ -250,6 +218,7 @@ $('.preset-options').on('change', function(){
 		let selected = $(this).val();
 		$('.day-options').prop('checked', false);
 		$('.day-options').prop('disabled', true);
+		checkParameterFilled();
 		
 		switch(selected){
 			
@@ -301,7 +270,8 @@ $('.preset-options').on('change', function(){
 		}
 		
 		
-	})
+				
+})
 
 $('.day-options').on('change', function(){
 	
@@ -323,6 +293,7 @@ $('.day-options').on('change', function(){
 	console.log(checkPresetCompatibility(selectedDays))
 	
 	selectPreset(checkPresetCompatibility(selectedDays));
+	checkParameterFilled();
 	
 })
 
@@ -415,3 +386,213 @@ function selectPreset(preset){
 	
 }
 
+$('#irregular-hours').on('change', function(){
+	
+	if($(this).is(':checked')){
+		
+		$('.shift-input').prop('disabled', true);
+		$('.shift-input').val('');
+		
+	}else{
+		
+		$('.shift-input').prop('disabled', false);
+		
+	}
+	
+	checkParameterFilled();
+	
+})
+
+$('#shift-start').on('change', function(){
+	
+	if($('#shift-hours').val() != ''){
+			
+			$('#shift-end').prop('disabled', true);
+			calculateShiftEndTime();
+			
+		}
+		
+	checkParameterFilled();
+	
+})
+
+$('#shift-hours').on('blur', function(){
+	
+	console.log($(this).val())
+	
+	if($(this).val() != '' && $(this).val() < 24){
+		
+		$('#shift-end').prop('disabled', true);
+		
+		calculateShiftEndTime();
+		
+	}else if($(this).val() > 24){
+	
+		alert("Input should be 24 or less only");
+		
+		$('#shift-hours').val('');
+		
+	}else{
+		
+		$('#shift-end').prop('disabled', false);
+		
+	}
+	
+	checkParameterFilled();
+	
+})
+
+function calculateShiftEndTime(){
+	
+	let shiftHours = Number($('#shift-hours').val());
+	let shiftStartTime = $('#shift-start').val();
+
+	if(shiftStartTime != ''){
+		
+		let shiftStartHour = Number(shiftStartTime.split(':')[0]);
+		let shiftStartMinute = Number(shiftStartTime.split(':')[1]);
+		
+		
+		let shiftEndHour = (shiftStartHour + shiftHours) % 24;
+		
+		   
+		let formattedHour = String(shiftEndHour).padStart(2, '0');
+		let formattedMinute = String(shiftStartMinute).padStart(2, '0');
+		
+		$('#shift-end').val(`${formattedHour}:${formattedMinute}`);
+	}
+	
+}
+
+$('#create').on('click', function(){
+	
+	displayParametersAsPreview();
+	$('#publish').prop('disabled', false);
+	
+})
+
+function displayParametersAsPreview(){
+	
+	assignment = $('#selection option:selected').text();
+	cycleType = $('#payroll-type').val();
+	workingDays = $('.preset-options:checked').val();
+	irregularWorkingHours = $('#irregular-hours:checked').val() != undefined ? true : false;
+	workingHoursStart = $('#shift-start').val();
+	workingHoursEnd = $('#shift-end').val();
+	createPayrollCycle();
+	
+	console.log("type", cycleType)
+	console.log("schedules", JSON.stringify(schedules))
+	console.log("irregularWorkingHours", irregularWorkingHours)
+	console.log("start", workingHoursStart)
+	console.log("end", workingHoursEnd)
+	console.log("working days preset", workingDays)
+	console.log("selectedWorkingDays", JSON.stringify(selectedDays))
+	
+	if(irregularWorkingHours != undefined){
+		
+		$('#shift-hours-value').html(`irregular`);
+		
+	}else{
+		
+		$('#shift-hours-value').html(`start: ${workingHoursStart} <br> end: ${workingHoursEnd}`);
+
+	}
+	
+	$('#payroll-type-value').html(`${cycleType}`);
+	$('#workdays-value').html(`${workingDays}`);
+	$('#assigned-to-value').html(`${assignment}`);
+	
+}
+
+function checkParameterFilled(){
+	
+	let parametersAreFilled = false;
+	
+	assignment = $('#selection option:selected').val();
+	cycleType = $('#payroll-type').val();
+	workingDays = $('.preset-options:checked').val();
+	irregularWorkingHours = $('#irregular-hours:checked').val();
+	workingHoursStart = $('#shift-start').val();
+	workingHoursEnd = $('#shift-end').val();
+	
+	if(assignment != undefined && 
+	   cycleType != undefined && 
+	   workingDays != undefined){
+		
+		if(irregularWorkingHours != undefined){
+			
+			parametersAreFilled = true;
+			
+		}else if(workingHoursStart != "" && 
+			     workingHoursEnd != ""){
+			
+			parametersAreFilled = true;
+			
+		}else{
+			
+			parametersAreFilled = false;
+			
+		}
+		
+	}
+	
+	if(parametersAreFilled){
+		
+		$('#create').prop('disabled', false);
+		
+	}else{
+		
+		$('#create').prop('disabled', true);
+		
+	}
+	
+}
+
+$('#publish').on('click', function(){
+	
+	storePlan();
+	
+})
+
+function storePlan(){
+	
+	let cycleDuration = payrollTypeValue(cycleType);
+	
+	console.log(assignment);
+	
+	$.ajax({
+		url: "/payroll/create",
+		type: "POST",
+		data:{
+			
+			   type: cycleType,
+			   //type: "test",	
+		       schedule: JSON.stringify(schedules),
+			   duration: Number(cycleDuration),
+			   irregularWorkingHours : irregularWorkingHours,
+			   workingHoursStart: workingHoursStart,
+			   workingHoursEnd: workingHoursEnd,
+			   //workingDays: workingDays,
+			   workingDays: "test",
+			   selectedDays: JSON.stringify(selectedDays),
+			   assignment: $('#selection option:selected').val()
+
+		      },
+		success: function(response) {
+		    console.log("Saved successfully", response);
+			
+			alert("payroll created successfully.");
+			
+			$("#publish").prop("disabled", true);
+			
+		},
+		error: function(xhr, status, error) {
+		    console.error("Error:", error);
+		}
+	})
+	
+	console.log(schedules);
+	console.log(cycleType);
+
+}

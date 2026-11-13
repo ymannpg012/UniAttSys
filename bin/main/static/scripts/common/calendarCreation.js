@@ -8,6 +8,7 @@ export function launchCalendarCreation(response, displayNode, userId){
 		//deletePeriodDisplayNode(displayNode);
 		//displayPeriodNode(displayNode);
 		
+		console.log(response);
 		console.log(cycles);
 		
 		displayAllPeriodsInDropdown(cycles, displayNode);
