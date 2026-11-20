@@ -1,7 +1,7 @@
 export function getEmploymentRoles(){
 	
 	return $.ajax({
-			url: "/fetchRoles",
+			url: "/roles",
 			type: "POST",
 		})
 }

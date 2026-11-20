@@ -1,6 +1,5 @@
 package jp.co.uas.model;
 
-import java.util.List;
 import java.util.UUID;
 
 import jp.co.uas.entities.UserInformation;
@@ -16,22 +15,6 @@ public class UserInformationObject {
 	private UUID userId;
 	
 	private UUID employmentRole;
-	
-	private List<UserInformation> userInfo;
-	
-	public UserInformationObject(List<UserInformation> userInfo) {
-		
-		this.userInfo = userInfo;
-		
-	}
-	
-	public List<UserInformation> getUserInfo() {
-		return userInfo;
-	}
-
-	public void setUserInfo(List<UserInformation> userInfo) {
-		this.userInfo = userInfo;
-	}
 
 	public UserInformationObject(UserInformation userInfo) {
 		this.firstName = userInfo.getFirstName();

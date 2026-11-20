@@ -2,14 +2,18 @@ package jp.co.uas.service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import jp.co.uas.entities.Payroll;
+import jp.co.uas.enums.DaysOfWeek;
 import jp.co.uas.enums.TypesOfPayroll;
 import jp.co.uas.enums.WorkDaysPreset;
 import jp.co.uas.model.TimeListObject;
@@ -45,92 +49,69 @@ public class PayrollService {
 	}
 	
 	@Transactional
-	public Payroll createPayroll(String type, String schedules, int cycleDuration, boolean irregularWorkingHours, String shiftStartTime, String shiftEndTime, String workingDaysPreset, String selectedWorkingDays,  UUID assignedTo) {
+	public Payroll createPayroll(String type, String schedules, int cycleDuration, boolean irregularWorkingHours, String shiftStartTime, String shiftEndTime, String workingDaysPreset, List<String> selectedWorkingDays,  UUID assignedTo) {
+		
+		Payroll p = new Payroll();
+		
+		TypesOfPayroll payrollType = inspectEnum(TypesOfPayroll.class, type);
+		
+		WorkDaysPreset workdaysPreset = inspectEnum(WorkDaysPreset.class, workingDaysPreset);
+		
+		Set<DaysOfWeek> days = selectedWorkingDays.stream().map(d -> inspectEnum(DaysOfWeek.class, d.trim().toUpperCase())).collect(Collectors.toCollection(() -> EnumSet.noneOf(DaysOfWeek.class)));
+		
+		p.setCycleType(payrollType.toString());
+		p.setDaysOfShiftPreset(workdaysPreset.toString());
+		
+		if(cycleDuration != 0 && cycleDuration < 25 || cycleDuration > 0) {
+			p.setCycleDuration(cycleDuration);
+		}else {
+			throw new RuntimeException("Invalid duration");
+		}
+		
+		if(irregularWorkingHours) {
+			p.setIrregular_hours(true);
+		}else if( shiftStartTime != null || shiftEndTime != null ){
+			p.setIrregular_hours(false);
+			p.setShiftStart(shiftStartTime);
+			p.setShiftEnd(shiftEndTime);
+		}else {
+			throw new RuntimeException("Invalid shift hours parameters");
+		}
+		
+		if(schedules != null) {
+			p.setCycleDates(schedules);
+		}else {
+			throw new RuntimeException(" schedules can not be empty! ");
+		}
+			
+		if(workdaysPreset == WorkDaysPreset.IRREGULAR) {
+			p.setDaysOfShift(null);
+		}else if(!days.isEmpty()) {
+			p.setDaysOfShift(days.toString());
+		}else {
+			throw new RuntimeException("Invalid workday preset value");
+		}
+		
+		if(roleRepo.existsById(assignedTo)) {
+			p.setAssignedTo(assignedTo);
+		}else {
+			throw new RuntimeException("Invalid role assignment");
+		}
+		
+		return createPayroll.save(p);
+		
+	}
+	
+	private <E extends Enum<E>>E inspectEnum(Class<E> cls, String value){
 		
 		try {
-			
-			Payroll payrollCreationFields = new Payroll();
-			
-			WorkDaysPreset irregularPreset = WorkDaysPreset.IRREGULAR;
-			
-			TypesOfPayroll.valueOf(type.toUpperCase());
-			WorkDaysPreset.valueOf(workingDaysPreset.toUpperCase());
-			
-			if(schedules != null) {
-				
-				payrollCreationFields.setCycleDates(schedules);
-				
-			}else {
-				
-				throw new RuntimeException("Invalid schedule: " + schedules);
-				
-			}
-			
-			if(cycleDuration != 0 && cycleDuration <= 365) {
-				
-				payrollCreationFields.setCycleDuration(cycleDuration);
-				
-			}else {
-				
-				throw new RuntimeException("Invalid duration: " + schedules);
-				
-			}
-			
-			if(irregularWorkingHours) {
-				
-				payrollCreationFields.setIrregular_hours(irregularWorkingHours);
-				payrollCreationFields.setShiftStart(null);
-				payrollCreationFields.setShiftEnd(null);
-				
-			}else if(!irregularWorkingHours && shiftStartTime != null && irregularWorkingHours && shiftEndTime != null) {
-				
-				payrollCreationFields.setIrregular_hours(false);
-				payrollCreationFields.setShiftStart(shiftStartTime);
-				payrollCreationFields.setShiftEnd(shiftEndTime);
-				
-			}else {
-				
-				throw new RuntimeException("Invalid working hours: " + irregularWorkingHours + " " + shiftStartTime + " " + shiftEndTime);
-				
-			}
-			
-			if(irregularPreset.name().equalsIgnoreCase(workingDaysPreset) && selectedWorkingDays.equals("[]")) {
-				
-				payrollCreationFields.setDaysOfShiftPreset(workingDaysPreset);
-				payrollCreationFields.setDaysOfShift(null);
-				
-			}else if(!selectedWorkingDays.equals("[]")) {
-				
-				payrollCreationFields.setDaysOfShiftPreset(workingDaysPreset);
-				payrollCreationFields.setDaysOfShift(selectedWorkingDays);
-				
-			}else {
-				
-				throw new RuntimeException("Invalid working days selected: " + workingDaysPreset + " " + selectedWorkingDays);
-				
-			}
-			
-			if(roleRepo.existsById(assignedTo)) {
-				
-				payrollCreationFields.setAssignedTo(assignedTo);
-				
-			}else {
-				
-				throw new RuntimeException("Invalid payroll type: " + assignedTo);
-				
-			}
-			
-			payrollCreationFields.setCycleType(type);
-			
-			return createPayroll.save(payrollCreationFields);
-			
+			return Enum.valueOf(cls, value.trim().toUpperCase());
 		}catch(IllegalArgumentException e) {
-			
-			throw new RuntimeException("Invalid param: " + type + " " + workingDaysPreset);
-			
+			throw new RuntimeException("Invalid " + cls.getSimpleName() + ": " + value);
 		}
 		
 	}
+	
 	
 	public List<TimeListOutput> listTimeWithinRange(LocalDate start, LocalDate end, UUID userId) {
 		

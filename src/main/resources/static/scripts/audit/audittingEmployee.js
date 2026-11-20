@@ -6,8 +6,8 @@ $(document).ready(async function(){
  
 	
 	const response = await tools.getEmploymentRoles();
-	const roles = response.roles;
-	localStorage.setItem("roles", JSON.stringify(response.roles));
+	const roles = response;
+	localStorage.setItem("roles", JSON.stringify(response));
 	
 	roles.forEach(role => {
 			$('#selection').append(
@@ -34,10 +34,10 @@ async function displayEmployeesByRole(){
 	
 	const response = await takeEmployeesByRole();
 	
-	console.log(response.userInfo)
+	console.log(response)
 	$('#employees').empty();
 					
-	let users = response.userInfo;
+	let users = response;
 					
 	users.forEach(user =>
 						

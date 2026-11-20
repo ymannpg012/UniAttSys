@@ -12,8 +12,8 @@ let assignment;
 $(document).ready(async function(){
 
 	const response = await getEmploymentRoles();
-	const roles = response.roles;
-	localStorage.setItem("roles", JSON.stringify(response.roles));
+	const roles = response;
+	localStorage.setItem("roles", JSON.stringify(response));
 		
 	roles.forEach(role => {
 			$('#selection').append(
@@ -567,15 +567,13 @@ function storePlan(){
 		data:{
 			
 			   type: cycleType,
-			   //type: "test",	
 		       schedule: JSON.stringify(schedules),
 			   duration: Number(cycleDuration),
 			   irregularWorkingHours : irregularWorkingHours,
 			   workingHoursStart: workingHoursStart,
 			   workingHoursEnd: workingHoursEnd,
-			   //workingDays: workingDays,
-			   workingDays: "test",
-			   selectedDays: JSON.stringify(selectedDays),
+			   workingDays: workingDays,
+			   selectedDays: selectedDays,
 			   assignment: $('#selection option:selected').val()
 
 		      },

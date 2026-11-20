@@ -1,5 +1,7 @@
 package jp.co.uas.entities;
 
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -8,6 +10,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jp.co.uas.enums.DaysOfWeek;
 
 @Entity
 @Table(name="payroll_cycle")

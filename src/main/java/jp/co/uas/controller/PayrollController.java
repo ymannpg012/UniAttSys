@@ -30,15 +30,14 @@ public class PayrollController {
 	}
 	
 	@PostMapping("/payroll/create")
-	public void storePlan(
-						  @RequestParam("type") String cycleType,
+	public void storePlan(@RequestParam("type") String cycleType,
 						  @RequestParam("schedule") String schedules,
 						  @RequestParam("duration") int cycleDuration,
 						  @RequestParam("irregularWorkingHours") boolean irregularWorkingHours,
 						  @RequestParam("workingHoursStart") String shiftStartTime,
 						  @RequestParam("workingHoursEnd") String shiftEndTime,
 						  @RequestParam("workingDays") String workingDaysPreset,
-						  @RequestParam("selectedDays") String selectedWorkingDays,
+						  @RequestParam(value = "selectedDays", defaultValue = "") List<String> selectedWorkingDays,
 						  @RequestParam("assignment") UUID assignment) {
 		
 
