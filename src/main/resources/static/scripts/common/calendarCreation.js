@@ -136,12 +136,15 @@ function takeCycleParameters(cycleStartDate, cycleEndDate){
 	}
 }
 
+let passedMaxDays;
+
 function createCalendarTable(cycleStart, cycleEnd, cycleParams, days, cycleDuration){
 	
 	$('#dates').empty();
+	passedMaxDays = false;
 	let isFebruaryBetweenRange;
 	const typicalMaxCycleDurationInDays = 31;
-		
+	
 	getMonth(cycleEnd) == 3 && getMonth(cycleStart) == 1 ? isFebruaryBetweenRange = true : isFebruaryBetweenRange = false;
 	
 	if(cycleDuration > typicalMaxCycleDurationInDays){
@@ -188,19 +191,19 @@ function mapMultiMonthCalendar(cycleStart, cycleEnd, cycleParams, days){
 		if(currentMonth == startCycleMonth){
 					
 			for(let cycleIndex = cycleParams.startRangeDay; cycleIndex <= currentMonthMaxDays; cycleIndex++){
-				dayIndex = takeTableIndexValue(dayIndex, days, cycleIndex);
+				dayIndex = takeTableIndexValue(dayIndex, days, cycleIndex, cycleParams);
 			}
 					
 		}else if(currentMonth != months[months.length - 1]){
 					
 			for(let cycleIndex = 1; cycleIndex <= currentMonthMaxDays; cycleIndex++){
-				dayIndex = takeTableIndexValue(dayIndex, days, cycleIndex);
+				dayIndex = takeTableIndexValue(dayIndex, days, cycleIndex, cycleParams);
 			}
 								
 		}else{
 					
 			for(let cycleIndex = 1; cycleIndex <= cycleParams.endRangeDay; cycleIndex++){
-					dayIndex = takeTableIndexValue(dayIndex, days, cycleIndex);
+					dayIndex = takeTableIndexValue(dayIndex, days, cycleIndex, cycleParams);
 			}
 					
 		}
@@ -218,19 +221,19 @@ function mapMonthFebruaryBetweenRange(cycleParams, days){
 	
 	for(i = cycleParams.startRangeDay; i <= cycleParams.maxDays; i++){
 				
-		dayIndex = takeTableIndexValue(dayIndex, days, i);
+		dayIndex = takeTableIndexValue(dayIndex, days, i, cycleParams);
 				
 		if(i == cycleParams.maxDays){
 								
 			for(j = 1; j <= februaryMaxDays; j++){
 											
-				dayIndex = takeTableIndexValue(dayIndex, days, j);
+				dayIndex = takeTableIndexValue(dayIndex, days, j, cycleParams);
 						
 				if(j == februaryMaxDays){
 																				
 					for(k = 1; k <= cycleParams.endRangeDay; k++){
 																							
-						dayIndex = takeTableIndexValue(dayIndex, days, k);
+						dayIndex = takeTableIndexValue(dayIndex, days, k, cycleParams);
 								
 					}
 				}
@@ -247,7 +250,7 @@ function mapMonthCalendar(cycleParams, days){
 	
 	for(let j = cycleParams.startRangeDay; j <= cycleParams.endRangeDay; j++){
 											
-		dayIndex = takeTableIndexValue(dayIndex, days, j);	
+		dayIndex = takeTableIndexValue(dayIndex, days, j, cycleParams);	
 		
 	}
 }
@@ -258,13 +261,13 @@ function mapMonthRangeCalendar(cycleParams, days){
 	
 	for(let i = cycleParams.startRangeDay; i <= cycleParams.maxDays; i++){
 			
-		dayIndex = takeTableIndexValue(dayIndex, days, i);
+		dayIndex = takeTableIndexValue(dayIndex, days, i, cycleParams);
 			
 		if(i == cycleParams.maxDays && cycleParams.maxDays != cycleParams.endRangeDay && i != cycleParams.endRangeDay){
 							
 			for(let j = 1; j <= cycleParams.endRangeDay; j++){
 										
-				dayIndex = takeTableIndexValue(dayIndex, days, j);
+				dayIndex = takeTableIndexValue(dayIndex, days, j, cycleParams);
 			}
 		}
 			
@@ -272,28 +275,52 @@ function mapMonthRangeCalendar(cycleParams, days){
 	
 }
 
-function takeTableIndexValue(dayIndex, days, i){
+
+
+function takeDayOfWeek(cycleParams, day){
+	
+	let parsedMonth = cycleParams.startRangeMonth - 1;
+	
+	if(passedMaxDays){
+		parsedMonth = cycleParams.startRangeMonth;
+	}
+	
+	if(day === cycleParams.maxDays){
+			passedMaxDays = true;
+	}
+	
+	let date = new Date(cycleParams.startRangeYear, parsedMonth, day)
+	
+	let dayOfWeek = date.toLocaleDateString('en-US', { weekday: 'short' });
+	
+	return dayOfWeek;
+}
+
+function takeTableIndexValue(dayIndex, days, i, cycleParams){
 	
 	if(days[dayIndex] !== undefined && i === getDay(days[dayIndex].date)){
 		
-		displayNotNullTime(i, days[dayIndex]);
+		let dayOfWeek = takeDayOfWeek(cycleParams, i);
+		displayNotNullTime(i, days[dayIndex], dayOfWeek);
 		dayIndex++;
 	
 	}else{
-	
-		displayNullTime(i);
+		
+		let dayOfWeek = takeDayOfWeek(cycleParams, i);
+		displayNullTime(i, dayOfWeek);
 	
 	}
 	
 	return dayIndex;
 }
 
-function displayNotNullTime(index, day){
+function displayNotNullTime(index, day, dayOfWeek){
 	
 	if(day.timeOut !== null){
 		
 		$('#dates').append(`
 						<tr>
+							<td>${dayOfWeek}</td>
 							<td>${index}</td>
 							<td class="data">${day.timeIn}</td>
 							<td class="data">${day.timeOut}</td>
@@ -303,6 +330,7 @@ function displayNotNullTime(index, day){
 		
 		$('#dates').append(`
 						<tr>
+							<td>${dayOfWeek}</td>
 							<td>${index}</td>
 							<td class="data">${day.timeIn}</td>
 							<td class="data"></td>
@@ -312,10 +340,11 @@ function displayNotNullTime(index, day){
 	
 }
 
-function displayNullTime(index){
+function displayNullTime(index, dayOfWeek){
 	
 	$('#dates').append(`
 						<tr>
+							<td>${dayOfWeek}</td>
 							<td>${index}</td>
 							<td class="data"></td>
 							<td class="data"></td>

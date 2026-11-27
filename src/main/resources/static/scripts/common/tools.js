@@ -60,7 +60,7 @@ export function formatDateToday(){
 }
 
 export function getMonth(date){
-	return date.split('-')[1];
+	return Number(date.split('-')[1]);
 }
 
 export function getDay(date){
@@ -71,7 +71,7 @@ export function getDay(date){
 }
 
 export function getYear(date){
-	return date.split('-')[0];
+	return Number(date.split('-')[0]);
 }
 
 	
